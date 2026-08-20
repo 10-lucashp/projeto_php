@@ -1,15 +1,23 @@
 <?php
+include 'cabecalho.php';
 include 'conexao.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
+
+
+
+
     $sql = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha'";
+
+
+
     $resultado = mysqli_query($conexao, $sql);
+
+
+
     if (mysqli_num_rows($resultado) == 1) {
         $mensagem = "Login realizado com sucesso!";
     } else {
@@ -19,9 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 
-<?php include 'cabecalho.php'; ?>
+
 <main>
     <h2>Login</h2>
+
+    <?php if (isset($mensagem)) { ?>
+        <p><?php echo $mensagem; ?></p>
+    <?php } ?>
+
     <form action="login.php" method="POST">
         <label>E-mail:</label>
         <input type="text" name="email"><br>
@@ -31,3 +44,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </main>
 <?php include 'rodape.php'; ?>
+
+
+<?php
+session_start();
+include 'conexao.php';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+    $sql = "SELECT * FROM usuarios WHERE email = '$email' AND senha =
+'$senha'";
+    $resultado = mysqli_query($conexao, $sql);
+    if (mysqli_num_rows($resultado) == 1) {
+        $usuario = mysqli_fetch_assoc($resultado);
+        $_SESSION['usuario_id'] = $usuario['id'];
+        $_SESSION['usuario_nome'] = $usuario['nome'];
+        header("Location: produtos/listar.php");
+        exit;
+    } else {
+        $mensagem = "E-mail ou senha inválidos.";
+    }
+}
+?>

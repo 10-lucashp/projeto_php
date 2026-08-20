@@ -16,3 +16,4 @@
             <a href="login.php">Login</a>
         </nav>
     </header>
+    <a href="logout.php">Sair</a>
