@@ -1,5 +1,5 @@
 <?php 
-    $url = '/projeto-php/';
+    $url = '/projeto_php/';
 ?> 
 
 <!DOCTYPE html>
